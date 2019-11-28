@@ -1,5 +1,6 @@
 import unittest
 from romanNumbers import romano_a_arabigo
+from romanNumbers import arabigo_a_romano
 from unittest.mock import patch
 
 
@@ -44,12 +45,20 @@ class RomanNumberTest(unittest.TestCase):
         self.assertEqual(romano_a_arabigo('IL'), 0)
         self.assertEqual(romano_a_arabigo('VL'), 0)
 
+        def test_numeros_mayores_de_3999(self):
+        self.assertEqual(romano_a_arabigo('(IV)'), 4000)
+        self.assertEqual(romano_a_arabigo('(VII)CMXXIII'), 7923)
+        self.assertEqual(romano_a_arabigo('((VII))(DLIII)DCXXXVII'), 7553637)
 
-'''
-        self.assertEqual(romano_a_arabigo('IC'), 0)
-        self.assertEqual(romano_a_arabigo('MVL'), 0)
-        self.assertEqual(romano_a_arabigo('IIX'), 0)
-'''
+
+class ArabicNumberTest(unittest.TestCase):
+    def test_arabic_a_roman(self):
+        self.assertEqual(arabigo_a_romano(1123), 'MCXXIII')
+        self.assertEqual(arabigo_a_romano(1678), 'MDCLXXVIII')
+        self.assertEqual(arabigo_a_romano(2123), 'MMCXXIII')
+        self.assertEqual(arabigo_a_romano(2144), 'MMCXLIV')
+        self.assertEqual(arabigo_a_romano(3999), 'MMMCMXCIX')
+
 
 if __name__ == '__main__':
     unittest.main()
