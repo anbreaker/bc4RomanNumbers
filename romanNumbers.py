@@ -4,12 +4,22 @@
 
 # valoresNumerosRomanos = {1: 'I', 5: 'V', 10: 'X', 50: 'L', 100: 'C', 500: 'D', 1000: 'M'}
 
-
 numArabigosToRoman = {'M': 1000, 'CM': 900, 'D': 500, 'C': 100,
                       'XC': 90, 'L': 50, 'X': 10, 'IX': 9, 'V': 5, 'I': 1}
 valores = {'M': 1000, 'D': 500, 'C': 100, 'L': 50, 'X': 10, 'V': 5, 'I': 1}
 valores5 = {'D': 500, 'L': 50, 'V': 5}
-simbolosoRdenados = ['I', 'V', 'X', 'L', 'C', 'D', 'M']
+simbolosOrdenados = ['I', 'V', 'X', 'L', 'C', 'D', 'M']
+
+
+def numMillares(numR):
+    contarParentesis = 0
+    numEntreParentesis = ''
+    for p in numR:
+        if p == ('(') or p == (')'):
+            contarParentesis += 1
+        else:
+            numEntreParentesis += p
+    return contarParentesis, numEntreParentesis
 
 
 def romano_a_arabigo(numRomano):  # (XCIX) -> 99
@@ -19,6 +29,9 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
 
     for letra in numRomano:  # Recorrer numRomano de izquierda a derecha
 
+        if letra == '(':
+            numMil = numMillares(numRomano)
+            print(f'numParentesis -> {numMil[0]}, numEntreParenteis -> {numMil[1]}')
         # Incrementamos el valor del numero arabigo con el valor del simbolo romano
         if letra in valores:
             numArabigo += valores.get(letra)
@@ -43,8 +56,8 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
                 if ultimoCaracter in valores5:
                     return 0
 
-                distancia = simbolosoRdenados.index(letra) - \
-                    simbolosoRdenados.index(ultimoCaracter)
+                distancia = simbolosOrdenados.index(letra) - \
+                    simbolosOrdenados.index(ultimoCaracter)
                 if distancia > 2:
                     return 0
 
@@ -63,7 +76,7 @@ def arabigo_a_romano(numero):
     for item in numArabigosToRoman:
         cociente = numero // numArabigosToRoman.get(item)
         if cociente > 0:
-            numero -= numArabigosToRoman.get(item)*cociente
+            numero = numero - numArabigosToRoman.get(item)*cociente
             mayorTres = item*cociente
             if mayorTres == 'CCCC':
                 resultado += 'CD'
@@ -73,11 +86,10 @@ def arabigo_a_romano(numero):
                 resultado += 'IV'
             else:
                 resultado += mayorTres
-            # print(f'Letra Romana {item}\'s--> {cociente}\t num Arabe--> {numArabigosToRoman.get(item)}')
+            # print(f'Letra Romana {item}\'s--> {cociente}\t num Arabe--> {numRomanos.get(item)}')
     # print(f'Resultado al final --> {resultado}')
     return resultado
 
 
-ver = print(romano_a_arabigo('MMCMLXIX'))
-ver = print(romano_a_arabigo('MMMCMXCIX'))
+ver = print(romano_a_arabigo('(IV)'))
 ver = print(arabigo_a_romano(3999))
