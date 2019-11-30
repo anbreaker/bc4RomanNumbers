@@ -4,6 +4,7 @@
 
 # valoresNumerosRomanos = {1: 'I', 5: 'V', 10: 'X', 50: 'L', 100: 'C', 500: 'D', 1000: 'M'}
 
+
 numArabigosToRoman = {'M': 1000, 'CM': 900, 'D': 500, 'C': 100,
                       'XC': 90, 'L': 50, 'X': 10, 'IX': 9, 'V': 5, 'I': 1}
 valores = {'M': 1000, 'D': 500, 'C': 100, 'L': 50, 'X': 10, 'V': 5, 'I': 1}
@@ -62,7 +63,7 @@ def arabigo_a_romano(numero):
     for item in numArabigosToRoman:
         cociente = numero // numArabigosToRoman.get(item)
         if cociente > 0:
-            numero = numero - numArabigosToRoman.get(item)*cociente
+            numero -= numArabigosToRoman.get(item)*cociente
             mayorTres = item*cociente
             if mayorTres == 'CCCC':
                 resultado += 'CD'
@@ -72,10 +73,11 @@ def arabigo_a_romano(numero):
                 resultado += 'IV'
             else:
                 resultado += mayorTres
-            # print(f'Letra Romana {item}\'s--> {cociente}\t num Arabe--> {numRomanos.get(item)}')
+            # print(f'Letra Romana {item}\'s--> {cociente}\t num Arabe--> {numArabigosToRoman.get(item)}')
     # print(f'Resultado al final --> {resultado}')
     return resultado
 
 
 ver = print(romano_a_arabigo('MMCMLXIX'))
+ver = print(romano_a_arabigo('MMMCMXCIX'))
 ver = print(arabigo_a_romano(3999))
