@@ -21,6 +21,8 @@ def numMillares(numR):
             numEntreParentesis += p
     return contarParentesis, numEntreParentesis
 
+# mandar numero fuera de los parentesis una especie de recursividad entre funciones
+
 
 def romano_a_arabigo(numRomano):  # (XCIX) -> 99
     numArabigo = 0
