@@ -14,12 +14,19 @@ simbolosOrdenados = ['I', 'V', 'X', 'L', 'C', 'D', 'M']
 def numMillares(numR):
     contarParentesis = 0
     numEntreParentesis = ''
+    numPostParentesis = ''
+    pAnterior = ''
     for p in numR:
         if p == ('(') or p == (')'):
             contarParentesis += 1
+            pAnterior = p
+            if pAnterior == (')'):
+                pass
+            else:
+                numPostParentesis += p
         else:
             numEntreParentesis += p
-    return contarParentesis, numEntreParentesis
+    return contarParentesis, numEntreParentesis, numPostParentesis
 
 # mandar numero fuera de los parentesis una especie de recursividad entre funciones
 
@@ -33,7 +40,12 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
 
         if letra == '(':
             numMil = numMillares(numRomano)
-            print(f'numParentesis -> {numMil[0]}, numEntreParenteis -> {numMil[1]}')
+            numAra = romano_a_arabigo(numMil[1])
+            print(
+                f'numParentesis -> {numMil[0]} \nnumEntreParenteis -> {numMil[1]} \nnumero Arabigo -> {numAra*1000} \nnumPostParentesis -> {numMil[2]}')
+            if numAra != 0:
+                return numAra*1000
+
         # Incrementamos el valor del numero arabigo con el valor del simbolo romano
         if letra in valores:
             numArabigo += valores.get(letra)
@@ -93,5 +105,6 @@ def arabigo_a_romano(numero):
     return resultado
 
 
-ver = print(romano_a_arabigo('(IV)'))
+# ('(VII)CMXXIII'), 7923)
+ver = print(romano_a_arabigo('(VII)CMXXIII'))
 ver = print(arabigo_a_romano(3999))
