@@ -4,30 +4,44 @@
 
 # valoresNumerosRomanos = {1: 'I', 5: 'V', 10: 'X', 50: 'L', 100: 'C', 500: 'D', 1000: 'M'}
 
-numArabigosToRoman = {'M': 1000, 'CM': 900, 'D': 500, 'C': 100,
-                      'XC': 90, 'L': 50, 'X': 10, 'IX': 9, 'V': 5, 'I': 1}
+
 valores = {'M': 1000, 'D': 500, 'C': 100, 'L': 50, 'X': 10, 'V': 5, 'I': 1}
 valores5 = {'D': 500, 'L': 50, 'V': 5}
-simbolosOrdenados = ['I', 'V', 'X', 'L', 'C', 'D', 'M']
+simbolosoRdenados = ['I', 'V', 'X', 'L', 'C', 'D', 'M']
 
 
-def numMillares(numR):
-    contarParentesis = 0
-    numEntreParentesis = ''
-    numPostParentesis = ''
-    pAnterior = ''
-    for p in numR:
-        if p == ('(') or p == (')'):
-            contarParentesis += 1
-            if p == (')'):
-                pAnterior = p
-        elif pAnterior != (')'):
-            numEntreParentesis += p
-        elif pAnterior == (')'):
-                numPostParentesis += p
-    return contarParentesis, numEntreParentesis, numPostParentesis
+rangos = {
+    0: {1: 'I', 5: 'V', 'next': 'X'},
+    1: {1: 'X', 5: 'L', 'next': 'C'},
+    2: {1: 'C', 5: 'D', 'next': 'M'},
+    3: {1: 'M', 'next': 'X'}
+}
 
-# mandar numero fuera de los parentesis una especie de recursividad entre funciones
+
+def numParentesis(cadena):
+    num = 0
+    for c in cadena:
+        if c == '(':
+            num += 1
+        else:
+            break
+    return num
+
+
+def contarParentesis(numRomano):
+    res = []
+    grupoParentesis = numRomano.split(')')
+    ix = 0
+    while ix < len(grupoParentesis):
+        grupo = grupoParentesis(ix)
+        numP = numParentesis(grupo)
+        if numP > 0:
+            for j in range(ix+1, ix+numP-1):
+                if grupoParentesis[j] != '':
+                    return 0
+            res.append(numP, grupo[numP:])
+            ix += numP
+    return res
 
 
 def romano_a_arabigo(numRomano):  # (XCIX) -> 99
@@ -36,17 +50,6 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
     ultimoCaracter = ''
 
     for letra in numRomano:  # Recorrer numRomano de izquierda a derecha
-
-        if letra == '(':
-            numMil = numMillares(numRomano)
-            numAra = romano_a_arabigo(numMil[1])
-            print(f'numParentesis -> {numMil[0]} \
-                    \n numRomanoEntreParenteis -> {numMil[1]} \
-                    \n numeroArabigoEntreParentesis -> {numAra} \
-                    \n numPostParentesis -> {numMil[2]}')
-            
-            if numAra != 0:
-                return numAra*1000 + romano_a_arabigo(numMil[2])
 
         # Incrementamos el valor del numero arabigo con el valor del simbolo romano
         if letra in valores:
@@ -72,8 +75,8 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
                 if ultimoCaracter in valores5:
                     return 0
 
-                distancia = simbolosOrdenados.index(letra) - \
-                    simbolosOrdenados.index(ultimoCaracter)
+                distancia = simbolosoRdenados.index(letra) - \
+                    simbolosoRdenados.index(ultimoCaracter)
                 if distancia > 2:
                     return 0
 
@@ -87,26 +90,26 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
     return numArabigo
 
 
-def arabigo_a_romano(numero):
-    resultado = ''
-    for item in numArabigosToRoman:
-        cociente = numero // numArabigosToRoman.get(item)
-        if cociente > 0:
-            numero = numero - numArabigosToRoman.get(item)*cociente
-            mayorTres = item*cociente
-            if mayorTres == 'CCCC':
-                resultado += 'CD'
-            elif mayorTres == 'XXXX':
-                resultado += 'XL'
-            elif mayorTres == 'IIII':
-                resultado += 'IV'
-            else:
-                resultado += mayorTres
-            # print(f'Letra Romana {item}\'s--> {cociente}\t num Arabe--> {numRomanos.get(item)}')
-    # print(f'Resultado al final --> {resultado}')
-    return resultado
+def invertir(cadena):
+    res = ''
+    for i in range(len(cadena)-1, -1, -1):
+        res += cadena[i]
+    return res
 
 
-# ('(VII)CMXXIII'), 7923)
-# ver = print(arabigo_a_romano(3999))
-ver = print(romano_a_arabigo('((VII))CMXXIII'))
+def arabigo_a_romano(valor):
+    cadena = invertir(str(valor))
+    res = ''
+    for i in range(len(cadena)-1, -1, -1):
+        digit = int(cadena[i])
+        if digit <= 3:
+            res += digit * rangos[i][1]
+        elif digit == 4:
+            res += rangos[i][1] + rangos[i][5]
+        elif digit == 5:
+            res += rangos[i][5]
+        elif digit < 9:
+            res += (rangos[i][5] + rangos[i][1] * (digit-5))
+        else:
+            res += rangos[i][1] + rangos[i]['next']
+    return res
