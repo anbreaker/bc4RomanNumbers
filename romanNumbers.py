@@ -19,13 +19,12 @@ def numMillares(numR):
     for p in numR:
         if p == ('(') or p == (')'):
             contarParentesis += 1
-            pAnterior = p
-            if pAnterior == (')'):
-                pass
-            else:
-                numPostParentesis += p
+            if p == (')'):
+                pAnterior = p
         else:
             numEntreParentesis += p
+            if pAnterior == (')'):
+                numPostParentesis += p
     return contarParentesis, numEntreParentesis, numPostParentesis
 
 # mandar numero fuera de los parentesis una especie de recursividad entre funciones
@@ -42,7 +41,7 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
             numMil = numMillares(numRomano)
             numAra = romano_a_arabigo(numMil[1])
             print(
-                f'numParentesis -> {numMil[0]} \nnumEntreParenteis -> {numMil[1]} \nnumero Arabigo -> {numAra*1000} \nnumPostParentesis -> {numMil[2]}')
+                f'numParentesis -> {numMil[0]} \nnumEntreParenteis -> {numMil[1]} \nnumero Arabigo -> {numAra} \nnumPostParentesis -> {numMil[2]}')
             if numAra != 0:
                 return numAra*1000
 
@@ -106,5 +105,5 @@ def arabigo_a_romano(numero):
 
 
 # ('(VII)CMXXIII'), 7923)
-ver = print(romano_a_arabigo('(VII)CMXXIII'))
-ver = print(arabigo_a_romano(3999))
+# ver = print(arabigo_a_romano(3999))
+ver = print(romano_a_arabigo('((VII))CMXXIII'))
