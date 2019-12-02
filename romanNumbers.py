@@ -21,9 +21,9 @@ def numMillares(numR):
             contarParentesis += 1
             if p == (')'):
                 pAnterior = p
-        else:
+        elif pAnterior != (')'):
             numEntreParentesis += p
-            if pAnterior == (')'):
+        elif pAnterior == (')'):
                 numPostParentesis += p
     return contarParentesis, numEntreParentesis, numPostParentesis
 
@@ -40,8 +40,11 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
         if letra == '(':
             numMil = numMillares(numRomano)
             numAra = romano_a_arabigo(numMil[1])
-            print(
-                f'numParentesis -> {numMil[0]} \nnumEntreParenteis -> {numMil[1]} \nnumero Arabigo -> {numAra} \nnumPostParentesis -> {numMil[2]}')
+            print(f'numParentesis -> {numMil[0]} \
+                    \n numRomanoEntreParenteis -> {numMil[1]} \
+                    \n numeroArabigoEntreParentesis -> {numAra} \
+                    \n numPostParentesis -> {numMil[2]}')
+            
             if numAra != 0:
                 return numAra*1000
 
