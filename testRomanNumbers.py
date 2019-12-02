@@ -1,6 +1,7 @@
 import unittest
 from romanNumbers import romano_a_arabigo
 from romanNumbers import arabigo_a_romano
+from romanNumbers import contarParentesis
 from unittest.mock import patch
 
 
@@ -50,19 +51,16 @@ class RomanNumberTest(unittest.TestCase):
         self.assertEqual(romano_a_arabigo('(VII)CMXXIII'), 7923)
         self.assertEqual(romano_a_arabigo('((VII))(DLIII)DCXXXVII'), 7553637)
 
+    def test_procesar_parentesis(self):
+        self.assertEqual(contarParentesis('(IV)'), (1, 'IV'))
+        self.assertEqual(contarParentesis('((VII))(XL)CCCXXII'), [
+                         (2, 'VII'), (1, 'XL'), (0, 'CCCXXII')])
+        self.assertEqual(contarParentesis('(VI)((VII))'), 0)
+        self.assertEqual(contarParentesis('(VI)((VII)'), 0)
+        self.assertEqual(contarParentesis('VI))((VII))'), 0)
+
 
 class ArabicNumberTest(unittest.TestCase):
-    def test_unidades(self):
-        self.assertEqual(arabigo_a_romano(1), 'I')
-        self.assertEqual(arabigo_a_romano(2), 'II')
-        self.assertEqual(arabigo_a_romano(7), 'VII')
-        self.assertEqual(arabigo_a_romano(9), 'IX')
-    
-    def test_decenas(self):
-        self.assertEqual(arabigo_a_romano(11), 'XI')
-        self.assertEqual(arabigo_a_romano(69), 'LXIX')
-        self.assertEqual(arabigo_a_romano(73), 'LXXIII')
-    
     def test_arabic_a_roman(self):
         self.assertEqual(arabigo_a_romano(1123), 'MCXXIII')
         self.assertEqual(arabigo_a_romano(1678), 'MDCLXXVIII')
