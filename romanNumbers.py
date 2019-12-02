@@ -46,7 +46,7 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
                     \n numPostParentesis -> {numMil[2]}')
             
             if numAra != 0:
-                return numAra*1000
+                return numAra*1000 + romano_a_arabigo(numMil[2])
 
         # Incrementamos el valor del numero arabigo con el valor del simbolo romano
         if letra in valores:
