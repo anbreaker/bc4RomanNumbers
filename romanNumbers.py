@@ -31,16 +31,18 @@ def numParentesis(cadena):
 def contarParentesis(numRomano):
     res = []
     grupoParentesis = numRomano.split(')')
+
     ix = 0
     while ix < len(grupoParentesis):
-        grupo = grupoParentesis(ix)
+        grupo = grupoParentesis[ix]
         numP = numParentesis(grupo)
         if numP > 0:
-            for j in range(ix+1, ix+numP-1):
+            for j in range(ix, ix+numP):
                 if grupoParentesis[j] != '':
-                    return 0
+                   return 0
             res.append(numP, grupo[numP:])
             ix += numP
+
     return res
 
 
@@ -113,3 +115,5 @@ def arabigo_a_romano(valor):
         else:
             res += rangos[i][1] + rangos[i]['next']
     return res
+
+print(contarParentesis('(IV)'))
