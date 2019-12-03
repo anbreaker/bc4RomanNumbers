@@ -37,16 +37,22 @@ def contarParentesis(numRomano):
         grupo = grupoParentesis[ix]
         numP = numParentesis(grupo)
         if numP > 0:
-            for j in range(ix, ix+numP):
-                if grupoParentesis[j] != '':
-                   return 0
-            res.append(numP, grupo[numP:])
-            ix += numP
+            for j in range(ix+1, ix+numP):
+                if grupo[j] != '':
+                    return 0
+            ix += numP - 1
+        if len(grupo[numP:]) > 0:
+            res.append([numP, grupo[numP:]])
+        ix += 1
+
+    for i in range(len(res)-1):
+        if res[i][0] <= res[i+1][0]:
+            return 0
 
     return res
 
 
-def romano_a_arabigo(numRomano):  # (XCIX) -> 99
+def romanoIndividual(numRomano):
     numArabigo = 0
     numRepes = 1
     ultimoCaracter = ''
@@ -92,11 +98,20 @@ def romano_a_arabigo(numRomano):  # (XCIX) -> 99
     return numArabigo
 
 
+def romano_a_arabigo(numRomano):  # (XCIX) -> 99
+    numArabigoTotal = 0
+    res = contarParentesis(numRomano)
+
+    for elemento in res:
+        romano = elemento[1]
+        factor = pow(10, 3 * elemento[0])
+        numArabigoTotal += romanoIndividual(romano) * factor
+
+    return numArabigoTotal
+
+
 def invertir(cadena):
-    res = ''
-    for i in range(len(cadena)-1, -1, -1):
-        res += cadena[i]
-    return res
+    return cadena[::-1]
 
 
 def arabigo_a_romano(valor):
@@ -116,4 +131,5 @@ def arabigo_a_romano(valor):
             res += rangos[i][1] + rangos[i]['next']
     return res
 
-print(contarParentesis('(IV)'))
+
+print('ver ', contarParentesis('((VI))'))
